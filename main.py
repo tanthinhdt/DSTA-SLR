@@ -59,7 +59,9 @@ def get_parser():
     parser.add_argument(
         "--dataset",
         default="WLASL2000",
-        choices=["WLASL100", "WLASL300", "WLASL1000", "WLASL2000", "AUTSL", "SLR500"],
+        choices=[
+            "WLASL100", "WLASL300", "WLASL1000", "WLASL2000", "AUTSL", "SLR500", "VSL"
+        ],
         help="dataset name",
     )
     parser.add_argument(
@@ -199,13 +201,12 @@ class Processor:
         arg.model_saved_name = "./work_dir/" + arg.Experiment_name + "/save_models/"
         arg.work_dir = "./work_dir/" + arg.Experiment_name
         arg.eval_results_dir = "./work_dir/" + arg.Experiment_name + "/eval_results/"
-        arg.train_feeder_args["data_path"] = (
-            f"./data/{arg.dataset}/train_data_joint.npy"
-        )
+        arg.train_feeder_args["data_path"] = f"./data/{arg.dataset}/train_data_joint.npy"
         arg.train_feeder_args["label_path"] = f"./data/{arg.dataset}/train_label.pkl"
         arg.test_feeder_args["data_path"] = f"./data/{arg.dataset}/val_data_joint.npy"
         arg.test_feeder_args["label_path"] = f"./data/{arg.dataset}/val_label.pkl"
         self.arg = arg
+
         # os.environ["CUDA_VISIBLE_DEVICES"] = str(arg.device)
         if arg.phase == "train":
             if not arg.train_feeder_args["debug"]:
