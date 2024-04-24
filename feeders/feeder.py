@@ -4,13 +4,13 @@ import torch
 from torch.utils.data import Dataset
 import sys
 import random
-
-from graph.sign_27 import Graph
-
-sys.path.extend(["../"])
+import matplotlib.pyplot as plt
 import os
+sys.path.extend(["../"])
+from graph.sign_27 import Graph
 from einops import rearrange
 from feeders import tools
+
 
 flip_index = np.concatenate(
     (
@@ -43,7 +43,6 @@ class Feeder(Dataset):
         num_class=2000,
     ):
         """
-
         :param data_path:
         :param label_path:
         :param random_choose: If true, randomly choose a portion of the input sequence
@@ -55,7 +54,6 @@ class Feeder(Dataset):
         :param use_mmap: If true, use mmap mode to load data, which can save the running memory
         :param lap_pe: If true, use laplacian positional encoding (only for LapPE attention model)
         """
-
         self.debug = debug
         self.data_path = data_path
         self.label_path = label_path
@@ -87,7 +85,7 @@ class Feeder(Dataset):
             ).T
             self.num_nodes = self.edge_index.max() + 1
 
-            if os.path.exists(f"data/eig_vals.pt"):
+            if os.path.exists("data/eig_vals.pt"):
                 self.eig_vals = torch.load(f"data/eig_vals.pt")
                 self.eig_vecs = torch.load(f"data/eig_vecs.pt")
             else:
@@ -186,7 +184,6 @@ class Feeder(Dataset):
                 for i_j, joint in enumerate(frame):
                     data_numpy[i_p, i_f, i_j] = np.dot(matrix_x, joint)
         data_numpy = data_numpy.transpose(3,1,2,0)  # C T V M"""
-
         if self.bone_stream:
             ori_data = data_numpy
             for v1, v2 in (
@@ -351,8 +348,6 @@ def test(data_path, label_path, vid=None, graph=None, is_3d=False):
     :param is_3d: when vis NTU, set it True
     :return:
     """
-    import matplotlib.pyplot as plt
-
     loader = torch.utils.data.DataLoader(
         dataset=Feeder(data_path, label_path),
         batch_size=64,
@@ -427,8 +422,6 @@ def test(data_path, label_path, vid=None, graph=None, is_3d=False):
 
 
 if __name__ == "__main__":
-    import os
-
     os.environ["DISPLAY"] = "localhost:10.0"
     data_path = "../data/ntu/xview/val_data_joint.npy"
     label_path = "../data/ntu/xview/val_label.pkl"
