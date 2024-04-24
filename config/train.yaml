@@ -1,7 +1,7 @@
-Experiment_name: experiment
+Experiment_name: VSL_v1.1.1
 
 # feeder
-dataset: WLASL2000 # [WLASL100, WLASL300, WLASL1000, WLASL2000, MLASL100, MLASL200, MLASL500, MLASL1000, SLR500, NMFs-CSL]
+dataset: VSL # [WLASL100, WLASL300, WLASL1000, WLASL2000, MLASL100, MLASL200, MLASL500, MLASL1000, SLR500, NMFs-CSL, VSL]
 feeder: feeders.feeder.Feeder
 train_feeder_args:
   debug: False
@@ -22,14 +22,14 @@ test_feeder_args:
   lap_pe: False
   debug: False
   random_choose: False
-  window_size: 120  
+  window_size: 120
   bone_stream: False # True or False
   motion_stream: True # True or False
 
 # model
 model: model.fstgan.Model
 model_args:
-  num_class: 2000   # 100 for WLASL100, 300 for WLASL300, 1000 for WLASL1000, 2000 for WLASL2000, 500 for SLR500, 100 for MLASL100, 200 for MLASL200, 500 for MLASL500, 1000 for MLASL1000, 1067 for NMFs-CSL
+  num_class: 100   # 100 for WLASL100, 300 for WLASL300, 1000 for WLASL1000, 2000 for WLASL2000, 500 for SLR500, 100 for MLASL100, 200 for MLASL200, 500 for MLASL500, 1000 for MLASL1000, 1067 for NMFs-CSL, 100 for VSL
   num_point: 27
   num_person: 1
   graph: graph.sign_27.Graph
@@ -48,20 +48,20 @@ step: [150, 200]
 
 # training
 device: [0]
-# weights: save_models/wlasl_all_attn-187.pt
-# start_epoch: 188
+weights: work_dir/VSL_v1.1/save_models/epoch-299.pt
+start_epoch: 50
 keep_rate: 0.9
 only_train_epoch: 1
-batch_size: 24
+batch_size: 16
 test_batch_size: 24
-num_epoch: 250
+num_epoch: 300
 nesterov: True
 warm_up_epoch: 20
 
-wandb: False
-wandb_project: SLGTformer First Run
-wandb_entity: irvl
-wandb_name: Twin Attention, No Shift, 24BS
+wandb: True
+wandb_project: DSTA-SLR
+wandb_entity: tanthinhdt24
+wandb_name: VSL_v1.1.1
 
-num_worker: 4
+num_worker: 2
 save_interval: 5
