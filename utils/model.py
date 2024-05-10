@@ -16,8 +16,10 @@ def get_predictions(
     ----------
     inputs : dict
         Model inputs.
-    model : Model
-        Model to get predictions from.
+    ort_session : ort.InferenceSession
+        ONNX Runtime session.
+    id2gloss : dict
+        Mapping from class index to class label.
     k : int, optional
         Number of predictions to return, by default 3.
 

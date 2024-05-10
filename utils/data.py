@@ -12,6 +12,21 @@ SELECTED_JOINTS = {
 
 
 def pad(joints: np.ndarray, num_frames: int = 150) -> np.ndarray:
+    '''
+    Add padding to the joints.
+
+    Parameters
+    ----------
+    joints : np.ndarray
+        The joints to pad.
+    num_frames : int, default=150
+        The number of frames to pad.
+
+    Returns
+    -------
+    np.ndarray
+        The padded joints.
+    '''
     if joints.shape[0] < num_frames:
         L = joints.shape[0]
         padded_joints = np.zeros((num_frames, joints.shape[1], joints.shape[2]))
@@ -34,6 +49,31 @@ def extract_joints(
     num_bodies: int = 1,
     num_channels: int = 3,
 ) -> np.ndarray:
+    '''
+    Extract the joints from the video.
+
+    Parameters
+    ----------
+    source : str
+        The path to the video.
+    keypoints_detector : mediapipe.solutions.holistic.Holistic
+        The keypoints detector.
+    resize_to : tuple, default=(256, 256)
+        The size to resize the image.
+    num_joints : int, default=27
+        The number of joints.
+    num_frames : int, default=150
+        The number of frames.
+    num_bodies : int, default=1
+        The number of bodies.
+    num_channels : int, default=3
+        The number of channels.
+
+    Returns
+    -------
+    np.ndarray
+        The extracted joints.
+    '''
     cap = cv2.VideoCapture(source)
 
     extracted_joints = []
@@ -105,11 +145,19 @@ def preprocess(
     ----------
     source : str
         The path to the video.
+    keypoints_detector : mediapipe.solutions.holistic.Holistic
+        The keypoints detector.
+    normalization : bool, default=True
+        Whether to normalize the data.
+    random_choose : bool, default=True
+        Whether to randomly sample the data.
+    window_size : int, default=120
+        The window size.
 
     Returns
     -------
-    dict
-        The model inputs.
+    np.ndarray
+        The processed inputs for model.
     '''
     inputs = extract_joints(source=source, keypoints_detector=keypoints_detector)
 
@@ -133,6 +181,21 @@ def preprocess(
 
 
 def random_sample_np(data: np.ndarray, size: int) -> np.ndarray:
+    '''
+    Sample the data randomly.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        The data to sample.
+    size : int
+        The size of the data to sample.
+
+    Returns
+    -------
+    np.ndarray
+        The sampled data.
+    '''
     C, T, V, M = data.shape
     if T == size:
         return data
@@ -142,6 +205,21 @@ def random_sample_np(data: np.ndarray, size: int) -> np.ndarray:
 
 
 def uniform_sample_np(data: np.ndarray, size: int) -> np.ndarray:
+    '''
+    Sample the data uniformly.
+
+    Parameters
+    ----------
+    data : np.ndarray
+        The data to sample.
+    size : int
+        The size of the data to sample.
+
+    Returns
+    -------
+    np.ndarray
+        The sampled data.
+    '''
     C, T, V, M = data.shape
     if T == size:
         return data

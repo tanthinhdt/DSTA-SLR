@@ -13,6 +13,14 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 
 
 def get_args() -> argparse.Namespace:
+    '''
+    Get the arguments from the command line.
+
+    Returns
+    -------
+    argparse.Namespace
+        The arguments.
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--config',
@@ -57,13 +65,19 @@ def inference(
 
     Parameters
     ----------
-    video : str
+    source: str
         The path to the video.
+    keypoints_detector: mediapipe.solutions.holistic.Holistic
+        The keypoints detector.
+    ort_session: ort.InferenceSession
+        ONNX Runtime session.
+    id2gloss: dict
+        Mapping from class index to class label.
 
     Returns
     -------
     str
-        The top-3 predictions.
+        The inference message.
     '''
     start_time = time.time()
     inputs = preprocess(
@@ -94,9 +108,15 @@ def inference(
     return output_message
 
 
-if __name__ == '__main__':
-    args = get_args()
+def main(args: argparse.Namespace) -> None:
+    '''
+    Main function for the demo.
 
+    Parameters
+    ----------
+    args : argparse.Namespace
+        The arguments.
+    '''
     check_arg(os.path.isfile(args.config), 'Configuration file does not exist.')
     with open(args.config, 'r') as f:
         config = yaml.safe_load(f)
@@ -132,3 +152,8 @@ if __name__ == '__main__':
         id2gloss=id2gloss,
     )
     logging.info(inference_message)
+
+
+if __name__ == '__main__':
+    args = get_args()
+    main(args=args)
