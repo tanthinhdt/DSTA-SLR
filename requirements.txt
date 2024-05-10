@@ -10,3 +10,5 @@ einops
 torch-geometric
 torch-scatter
 matplotlib
+onnx
+onnxruntime
