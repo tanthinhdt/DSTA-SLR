@@ -18,23 +18,32 @@ To install necessary packages, run this command.
 pip install -r requirements.txt
 ```
 
-## Training and testing:
+## Model instructions
 Conduct the following commands: 
 ```
 mkdir save_models
 ```
 ### Training
-
-```
-python -u main.py --config config/train.yaml --device your_device_id
-```
+1. Adjust fields in the [training config file](config/train.yaml).
+2. Run the following command:
+    ```
+    python -u main.py --config config/train.yaml --device your_device_id
+    ```
 
 ### Testing:
-```
-python -u main.py --config config/test.yaml --device your_device_id
-```
+1. Adjust fields in the [testing config file](config/test.yaml).
+2. Run the following command:
+    ```
+    python -u main.py --config config/test.yaml --device your_device_id
+    ```
 
-To test your model with pretrained weights, you may modify the line 52 in [./config/test.yaml](./config/test.yaml) to path of your pretrained weight.
+### Demo
+1. Use [export_to_onnx.py](export_to_onnx.py) to export model to ONNX.
+2. Adjust fields in the [demo config file](config/demo.yaml).
+3. Run the following command:
+    ```
+    python demo.py --config config/demo.yaml
+    ```
 
 ## Acknowledgements
 
